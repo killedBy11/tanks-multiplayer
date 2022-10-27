@@ -1,0 +1,7 @@
+# ninja log v5
+1	28	1666856224167767294	CMakeFiles/graphicsTest.dir/main.c.o	c7ac10ce917e0465
+0	203	1666855197031628443	CMakeFiles/graphicsTest.dir/tigr.c.o	35f4c282f1af27c9
+28	143	1666856224282251615	graphicsTest	94ae1da68de5938
+5	58	1666858011799578370	CMakeFiles/graphicsTest.dir/main.c.o	8ce3454554aebb92
+6	296	1666858012039815969	CMakeFiles/graphicsTest.dir/tigr.c.o	f973a86aa4d80ad0
+296	424	1666858012169543755	graphicsTest	94ae1da68de5938
