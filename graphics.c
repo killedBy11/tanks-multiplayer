@@ -2,7 +2,7 @@
 // Created by Antoniu Ficard on 27.10.2022.
 //
 
-#include "physics.h"
+#include "graphics.h"
 
 int drawTank(Tigr *bmp, Tank t) {
     return -1;
