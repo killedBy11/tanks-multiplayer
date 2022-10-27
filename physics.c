@@ -14,18 +14,18 @@ createTank(Point *location, unsigned short heading, float sizeCoefficient, float
         return NULL;
     }
 
-    t->location = location;
-    t->heading = heading;
-    t->sizeCoefficient = sizeCoefficient;
-    t->dragCoefficient = dragCoefficient;
-    t->mass = mass;
-    t->health = health;
+    t->base.location = location;
+    t->base.heading = heading;
+    t->base.sizeCoefficient = sizeCoefficient;
+    t->base.dragCoefficient = dragCoefficient;
+    t->base.mass = mass;
+    t->base.health = health;
     t->type = TANK;
 
     return t;
 }
 
-Projectile *createProjectile(Point *location, unsigned short radius, float dragCoefficient, unsigned int mass,
+Projectile *createProjectile(Point *location, float radius, float dragCoefficient, unsigned int mass,
                              unsigned short health) {
     Projectile *p = (Projectile *) malloc(sizeof(Projectile));
 
@@ -33,11 +33,11 @@ Projectile *createProjectile(Point *location, unsigned short radius, float dragC
         return NULL;
     }
 
-    p->location = location;
-    p->radius = radius;
-    p->dragCoefficient = dragCoefficient;
-    p->mass = mass;
-    p->health = health;
+    p->base.location = location;
+    p->base.sizeCoefficient = radius;
+    p->base.dragCoefficient = dragCoefficient;
+    p->base.mass = mass;
+    p->base.health = health;
     p->type = PROJECTILE;
 
     return p;

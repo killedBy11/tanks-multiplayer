@@ -11,43 +11,43 @@
 #define MAX_HEALTH 100
 #define MIN_HEALTH 0
 
-typedef enum {
+enum PhysicalObjectType {
     TANK, PROJECTILE, FORCE
-} ObjectType;
+};
 
-typedef enum {
+enum ForceType {
     ROTATIONAL, LINEAR
-} ForceType;
+};
 
 typedef struct {
     Point *location;
-    unsigned short int heading;
-    float sizeCoefficient;
     float dragCoefficient;
+    float sizeCoefficient;
     unsigned int mass;
     unsigned short int health;
-    ObjectType type;
+    unsigned short int heading;
+} PhysicalObject;
+
+typedef struct {
+    PhysicalObject base;
+    enum PhysicalObjectType type;
 } Tank;
 
 typedef struct {
-    Point *location;
-    unsigned short int radius;
-    float dragCoefficient;
-    unsigned int mass;
-    unsigned short int health;
-    ObjectType type;
+    PhysicalObject base;
+    enum PhysicalObjectType type;
 } Projectile;
 
 typedef struct {
     Vector *vector;
-    ObjectType type;
-    ForceType force;
+    enum PhysicalObjectType type;
+    enum ForceType force;
 } ForceLinear;
 
 typedef struct {
     int angularVelocity;
-    ObjectType type;
-    ForceType force;
+    enum PhysicalObjectType type;
+    enum ForceType force;
 } ForceRotational;
 
 /// Functions
@@ -60,7 +60,7 @@ createTank(Point *location, unsigned short int heading, float sizeCoefficient, f
            unsigned short int health);
 
 // allocate space in memory for a Projectile object and initialise
-Projectile *createProjectile(Point *location, unsigned short radius, float dragCoefficient, unsigned int mass,
+Projectile *createProjectile(Point *location, float radius, float dragCoefficient, unsigned int mass,
                              unsigned short int health);
 
 // allocate space in memory for a ForceLinear object and initialise

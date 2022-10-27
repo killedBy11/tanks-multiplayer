@@ -5,20 +5,20 @@
 #ifndef GRAPHICSTEST_GEOMETRY_H
 #define GRAPHICSTEST_GEOMETRY_H
 
-typedef enum {
+enum ObjectType {
     POINT, VECTOR
-} ObjectType;
+};
 
 typedef struct {
     int x;
     int y;
-    ObjectType type;
+    enum ObjectType type;
 } Point;
 
 typedef struct {
     int i;
     int j;
-    ObjectType type;
+    enum ObjectType type;
 } Vector;
 
 // Functions
