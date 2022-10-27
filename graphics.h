@@ -4,6 +4,8 @@
 
 #include "physics.h"
 
+#define TANK_ASPECT_RATIO 60
+
 // Functions
 
 // gets a tank as a parameter and draws it on the screen given as parameter

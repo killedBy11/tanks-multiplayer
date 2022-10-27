@@ -5,6 +5,7 @@
 #include "graphics.h"
 
 int drawTank(Tigr *bmp, Tank t) {
+    
     return -1;
 }
 
