@@ -4,12 +4,15 @@
 
 #ifndef GRAPHICSTEST_PHYSICS_H
 #define GRAPHICSTEST_PHYSICS_H
+#define ASPECT_RATIO 60
+
 #include "tigr.h"
 
 typedef struct {
     int x;
     int y;
-    int rotation;
+    int heading;
+    float sizeCoefficient;
     float dragCoefficient;
     int mass;
 } Tank;
@@ -38,10 +41,10 @@ typedef enum {
 /// Functions
 
 // gets a tank as a parameter and draws it on the screen given as parameter
-int drawTank(Tigr* bmp, Tank t);
+int drawTank(Tigr *bmp, Tank t);
 
 // gets a projectile as a parameter and draws it on the screen given as parameter
-int drawProjectile(Tigr* bmp, Projectile p);
+int drawProjectile(Tigr *bmp, Projectile p);
 
 
 #endif //GRAPHICSTEST_PHYSICS_H

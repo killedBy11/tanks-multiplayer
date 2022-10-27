@@ -4,10 +4,10 @@
 
 #include "physics.h"
 
-int drawTank(Tigr* bmp, Tank t) {
+int drawTank(Tigr *bmp, Tank t) {
     return -1;
 }
 
-int drawProjectile(Tigr* bmp, Projectile p) {
+int drawProjectile(Tigr *bmp, Projectile p) {
     return -1;
 }
