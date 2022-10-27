@@ -5,34 +5,6 @@
 #include <stdlib.h>
 #include "physics.h"
 
-Point *createPoint(int x, int y) {
-    Point *p = (Point *) malloc(sizeof(Point));
-
-    if (NULL == p) {
-        return NULL;
-    }
-
-    p->x = x;
-    p->y = y;
-    p->type = POINT;
-
-    return p;
-}
-
-Vector *createVector(int i, int j) {
-    Vector *v = (Vector *) malloc(sizeof(Vector));
-
-    if (NULL == v) {
-        return NULL;
-    }
-
-    v->i = i;
-    v->j = j;
-    v->type = VECTOR;
-
-    return v;
-}
-
 Tank *
 createTank(Point *location, unsigned short heading, float sizeCoefficient, float dragCoefficient, unsigned int mass,
            unsigned short health) {
@@ -99,16 +71,6 @@ ForceRotational *createForceRotational(int angularVelocity) {
     return f;
 }
 
-void freePoint(Point **p) {
-    free(*p);
-    *p = NULL;
-}
-
-void freeVector(Vector **v) {
-    free(*v);
-    *v = NULL;
-}
-
 void freeTank(Tank **t) {
     freePoint(&(*t)->location);
     free(*t);
@@ -131,3 +93,20 @@ void freeForceRotational(ForceRotational **f) {
     free(*f);
     *f = NULL;
 }
+
+ForceLinear *addForceLinear(ForceLinear *f1, ForceLinear *f2) {
+    Vector *computedVector = addVector(f1->vector, f2->vector);
+
+    ForceLinear *result = createForceLinear(computedVector);
+
+    return result;
+}
+
+ForceRotational *addForceRotational(ForceRotational *f1, ForceRotational *f2) {
+    int computedAngularVelocity = f1->angularVelocity + f2->angularVelocity;
+
+    ForceRotational *result = createForceRotational(computedAngularVelocity);
+
+    return result;
+}
+

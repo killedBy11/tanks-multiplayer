@@ -6,29 +6,18 @@
 #define GRAPHICSTEST_PHYSICS_H
 
 #include "tigr.h"
+#include "geometry.h"
 
 #define MAX_HEALTH 100
 #define MIN_HEALTH 0
 
 typedef enum {
-    TANK, PROJECTILE, FORCE, POINT, VECTOR
+    TANK, PROJECTILE, FORCE
 } ObjectType;
 
 typedef enum {
     ROTATIONAL, LINEAR
 } ForceType;
-
-typedef struct {
-    int x;
-    int y;
-    ObjectType type;
-} Point;
-
-typedef struct {
-    int i;
-    int j;
-    ObjectType type;
-} Vector;
 
 typedef struct {
     Point *location;
@@ -65,12 +54,6 @@ typedef struct {
 
 // constructors for structs defined above
 
-// allocate space in memory for a Point object and initialise
-Point *createPoint(int x, int y);
-
-// allocate space in memory for a Vector object and initialise
-Vector *createVector(int i, int j);
-
 // allocate space in memory for a Tank object and initialise
 Tank *
 createTank(Point *location, unsigned short int heading, float sizeCoefficient, float dragCoefficient, unsigned int mass,
@@ -87,16 +70,6 @@ ForceLinear *createForceLinear(Vector *vector);
 ForceRotational *createForceRotational(int angularVelocity);
 
 // destructors that go recursively for the structs defined above
-
-// deallocate memory for Point
-// input: gets the address of the pointer that stores the Point
-// output: sets the pointer given as a parameter to NULL
-void freePoint(Point **p);
-
-// deallocate memory for a Vector
-// input: gets the address of the pointer that stores the Vector
-// output: sets the pointer given as a parameter to NULL
-void freeVector(Vector **v);
 
 // deallocate memory for a Tank and the Point within it
 // input: gets the address of the pointer that stores the Tank
@@ -117,5 +90,13 @@ void freeForceLinear(ForceLinear **f);
 // input: gets the address of the pointer that stores the ForceRotational
 // output: sets the pointer given as a parameter to NULL
 void freeForceRotational(ForceRotational **f);
+
+// functions that compute forces
+
+// add 2 linear forces together and return a pointer to the resulting force, newly allocated
+ForceLinear *addForceLinear(ForceLinear *f1, ForceLinear *f2);
+
+// add 2 rotational forces together and return a pointer to the resulting force, newly allocated
+ForceRotational *addForceRotational(ForceRotational *f1, ForceRotational *f2);
 
 #endif //GRAPHICSTEST_PHYSICS_H
