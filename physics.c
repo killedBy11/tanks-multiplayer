@@ -20,6 +20,9 @@ createTank(Point *location, unsigned short heading, float sizeCoefficient, float
     t->base.dragCoefficient = dragCoefficient;
     t->base.mass = mass;
     t->base.health = health;
+    t->base.linearVelocity.i = 0;
+    t->base.linearVelocity.j = 0;
+    t->base.angularVelocity = 0;
     t->type = TANK;
 
     return t;
@@ -38,6 +41,9 @@ Projectile *createProjectile(Point *location, float radius, float dragCoefficien
     p->base.dragCoefficient = dragCoefficient;
     p->base.mass = mass;
     p->base.health = health;
+    p->base.linearVelocity.i = 0;
+    p->base.linearVelocity.j = 0;
+    p->base.angularVelocity = 0;
     p->type = PROJECTILE;
 
     return p;
@@ -57,14 +63,14 @@ ForceLinear *createForceLinear(Vector *vector) {
     return f;
 }
 
-ForceRotational *createForceRotational(int angularVelocity) {
+ForceRotational *createForceRotational(int torque) {
     ForceRotational *f = (ForceRotational *) malloc(sizeof(ForceRotational));
 
     if (NULL == f) {
         return NULL;
     }
 
-    f->angularVelocity = angularVelocity;
+    f->torque = torque;
     f->type = FORCE;
     f->force = ROTATIONAL;
 
@@ -103,7 +109,7 @@ ForceLinear *addForceLinear(ForceLinear *f1, ForceLinear *f2) {
 }
 
 ForceRotational *addForceRotational(ForceRotational *f1, ForceRotational *f2) {
-    int computedAngularVelocity = f1->angularVelocity + f2->angularVelocity;
+    int computedAngularVelocity = f1->torque + f2->torque;
 
     ForceRotational *result = createForceRotational(computedAngularVelocity);
 

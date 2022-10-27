@@ -26,6 +26,8 @@ typedef struct {
     unsigned int mass;
     unsigned short int health;
     unsigned short int heading;
+    Vector linearVelocity;
+    int angularVelocity;
 } PhysicalObject;
 
 typedef struct {
@@ -45,7 +47,7 @@ typedef struct {
 } ForceLinear;
 
 typedef struct {
-    int angularVelocity;
+    int torque;
     enum PhysicalObjectType type;
     enum ForceType force;
 } ForceRotational;
@@ -67,7 +69,7 @@ Projectile *createProjectile(Point *location, float radius, float dragCoefficien
 ForceLinear *createForceLinear(Vector *vector);
 
 // allocate space in memory for a ForceRotational object and initialise
-ForceRotational *createForceRotational(int angularVelocity);
+ForceRotational *createForceRotational(int torque);
 
 // destructors that go recursively for the structs defined above
 
