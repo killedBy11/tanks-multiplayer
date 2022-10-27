@@ -9,10 +9,10 @@
 #include "geometry.h"
 
 #define MAX_HEALTH 100
-#define MIN_HEALTH 0
+#define AIR_DENSITY 1.204
 
 enum PhysicalObjectType {
-    TANK, PROJECTILE, FORCE
+    TANK, PROJECTILE
 };
 
 enum ForceType {
@@ -27,7 +27,7 @@ typedef struct {
     unsigned short int health;
     unsigned short int heading;
     Vector linearVelocity;
-    int angularVelocity;
+    float angularVelocity;
 } PhysicalObject;
 
 typedef struct {
@@ -42,13 +42,11 @@ typedef struct {
 
 typedef struct {
     Vector *vector;
-    enum PhysicalObjectType type;
     enum ForceType force;
 } ForceLinear;
 
 typedef struct {
-    int torque;
-    enum PhysicalObjectType type;
+    float torque;
     enum ForceType force;
 } ForceRotational;
 
@@ -69,7 +67,7 @@ Projectile *createProjectile(Point *location, float radius, float dragCoefficien
 ForceLinear *createForceLinear(Vector *vector);
 
 // allocate space in memory for a ForceRotational object and initialise
-ForceRotational *createForceRotational(int torque);
+ForceRotational *createForceRotational(float torque);
 
 // destructors that go recursively for the structs defined above
 
@@ -100,5 +98,16 @@ ForceLinear *addForceLinear(ForceLinear *f1, ForceLinear *f2);
 
 // add 2 rotational forces together and return a pointer to the resulting force, newly allocated
 ForceRotational *addForceRotational(ForceRotational *f1, ForceRotational *f2);
+
+// generate a linear friction force for a given physical object
+ForceLinear *generateLinearFriction(PhysicalObject *object);
+
+// generate a rotational friction force for a given physical object
+ForceRotational *generateRotationalFriction(PhysicalObject *object);
+
+// functions that apply on physical objects
+
+// apply damage to a physical object and subtract the damage from the health of the physical object or destroy if the damage is too high
+void applyDamage(void **object, enum PhysicalObjectType type, unsigned short int damage);
 
 #endif //GRAPHICSTEST_PHYSICS_H

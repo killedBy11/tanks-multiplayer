@@ -16,8 +16,8 @@ typedef struct {
 } Point;
 
 typedef struct {
-    int i;
-    int j;
+    float i;
+    float j;
     enum ObjectType type;
 } Vector;
 
@@ -29,7 +29,7 @@ typedef struct {
 Point *createPoint(int x, int y);
 
 // allocate space in memory for a Vector object and initialise
-Vector *createVector(int i, int j);
+Vector *createVector(float i, float j);
 
 // destructors that go recursively for the structs defined above
 

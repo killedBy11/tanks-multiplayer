@@ -19,7 +19,7 @@ Point *createPoint(int x, int y) {
     return p;
 }
 
-Vector *createVector(int i, int j) {
+Vector *createVector(float i, float j) {
     Vector *v = (Vector *) malloc(sizeof(Vector));
 
     if (NULL == v) {
@@ -44,8 +44,8 @@ void freeVector(Vector **v) {
 }
 
 Vector *addVector(Vector *v1, Vector *v2) {
-    int computedVersorI = v1->i + v2->i;
-    int computedVersorJ = v1->j + v2->j;
+    float computedVersorI = v1->i + v2->i;
+    float computedVersorJ = v1->j + v2->j;
 
     Vector *result = createVector(computedVersorI, computedVersorJ);
 

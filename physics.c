@@ -57,13 +57,12 @@ ForceLinear *createForceLinear(Vector *vector) {
     }
 
     f->vector = vector;
-    f->type = FORCE;
     f->force = LINEAR;
 
     return f;
 }
 
-ForceRotational *createForceRotational(int torque) {
+ForceRotational *createForceRotational(float torque) {
     ForceRotational *f = (ForceRotational *) malloc(sizeof(ForceRotational));
 
     if (NULL == f) {
@@ -71,20 +70,18 @@ ForceRotational *createForceRotational(int torque) {
     }
 
     f->torque = torque;
-    f->type = FORCE;
     f->force = ROTATIONAL;
-
     return f;
 }
 
 void freeTank(Tank **t) {
-    freePoint(&(*t)->location);
+    freePoint(&(*t)->base.location);
     free(*t);
     *t = NULL;
 }
 
 void freeProjectile(Projectile **p) {
-    freePoint(&(*p)->location);
+    freePoint(&(*p)->base.location);
     free(*p);
     *p = NULL;
 }
@@ -113,6 +110,69 @@ ForceRotational *addForceRotational(ForceRotational *f1, ForceRotational *f2) {
 
     ForceRotational *result = createForceRotational(computedAngularVelocity);
 
+    return result;
+}
+
+void destroyPhysicalObject(void **object, enum PhysicalObjectType type) {
+    switch (type) {
+        case TANK:
+            freeTank((Tank **) object);
+            break;
+        case PROJECTILE:
+            freeProjectile((Projectile **) object);
+            break;
+        default:
+            break;
+    }
+}
+
+void applyDamage(void **object, enum PhysicalObjectType type, unsigned short int damage) {
+    switch (type) {
+        case TANK: {
+            Tank **t = (Tank **) object;
+            if ((*t)->base.health <= damage) {
+                destroyPhysicalObject(object, TANK);
+            } else {
+                (*t)->base.health -= damage;
+            }
+            break;
+        }
+        case PROJECTILE: {
+            Projectile **p = (Projectile **) object;
+            if ((*p)->base.health <= damage) {
+                destroyPhysicalObject(object, PROJECTILE);
+            } else {
+                (*p)->base.health -= damage;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+ForceLinear *generateLinearFriction(PhysicalObject *object) {
+    Vector *frictionDirection = createVector(
+            AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
+            object->linearVelocity.i *
+            object->linearVelocity.i / 2,
+            AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
+            object->linearVelocity.j *
+            object->linearVelocity.j / 2);
+
+    if (NULL == frictionDirection) {
+        return NULL;
+    }
+
+    ForceLinear *result = createForceLinear(frictionDirection);
+    return result;
+}
+
+ForceRotational *generateRotationalFriction(PhysicalObject *object) {
+    ForceRotational *result = createForceRotational(
+            AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
+            object->angularVelocity *
+            object->angularVelocity / 2);
     return result;
 }
 
