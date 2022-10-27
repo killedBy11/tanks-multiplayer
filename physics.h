@@ -8,6 +8,15 @@
 
 #include "tigr.h"
 
+typedef enum {
+    TANK, PROJECTILE, FORCE
+} ObjectType;
+
+typedef enum {
+    ROTATIONAL, LINEAR
+} ForceType;
+
+
 typedef struct {
     int x;
     int y;
@@ -15,6 +24,7 @@ typedef struct {
     float sizeCoefficient;
     float dragCoefficient;
     int mass;
+    ObjectType type;
 } Tank;
 
 typedef struct {
@@ -23,20 +33,21 @@ typedef struct {
     int r;
     float dragCoefficient;
     int mass;
+    ObjectType type;
 } Projectile;
 
 typedef struct {
     int i;
     int j;
+    ObjectType type;
+    ForceType force;
 } ForceLinear;
 
 typedef struct {
     int w;
+    ObjectType type;
+    ForceType force;
 } ForceRotational;
-
-typedef enum {
-    ROTATIONAL, LINEAR
-} ForceType;
 
 /// Functions
 
