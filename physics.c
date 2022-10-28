@@ -153,10 +153,10 @@ void applyDamage(void **object, enum PhysicalObjectType type, unsigned short int
 
 ForceLinear *generateLinearFriction(PhysicalObject *object) {
     Vector *frictionDirection = createVector(
-            AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
+            -1 * AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
             object->linearVelocity.i *
             object->linearVelocity.i / 2,
-            AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
+            -1 * AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
             object->linearVelocity.j *
             object->linearVelocity.j / 2);
 
@@ -170,7 +170,7 @@ ForceLinear *generateLinearFriction(PhysicalObject *object) {
 
 ForceRotational *generateRotationalFriction(PhysicalObject *object) {
     ForceRotational *result = createForceRotational(
-            AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
+            -1 * AIR_DENSITY * object->sizeCoefficient * (float) object->mass * object->dragCoefficient *
             object->angularVelocity *
             object->angularVelocity / 2);
     return result;
