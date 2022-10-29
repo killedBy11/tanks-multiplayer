@@ -48,4 +48,12 @@ void freeVector(Vector **v);
 // add 2 vectors together and return a pointer to the resulting vector, newly allocated
 Vector *addVector(Vector *v1, Vector *v2);
 
+//returns a new point which represents point p rotated with radians in trigonometric sense
+//input:  p - Point*: address of point you want to rotate
+//        radians - float:  the number of radians by which the point will be rotated
+//output: the new rotated point
+Point *rotatePoint(Point *p, float radians);
+
+
+
 #endif //GRAPHICSTEST_GEOMETRY_H

@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include "geometry.h"
+#include <math.h>
 
 Point *createPoint(int x, int y) {
     Point *p = (Point *) malloc(sizeof(Point));
@@ -50,4 +51,14 @@ Vector *addVector(Vector *v1, Vector *v2) {
     Vector *result = createVector(computedVersorI, computedVersorJ);
 
     return result;
+}
+
+Point *rotatePoint(Point *p, float radians) {
+    float sine = sinf(radians);
+    float cosine = cosf(radians);
+
+    int newPointX = (int) roundf(cosine * p->x - sine * p->y);
+    int newPointY = (int) roundf(sine * p->x + cosine * p->y);
+
+    return createPoint(newPointX, newPointY);
 }
