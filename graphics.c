@@ -13,7 +13,7 @@
 //        corners - Point* [4], array of 4 Point pointers. The array must contain only NULL, as the pointers will be overwritten by the function
 // output: corners as a parameter, pointer array from input
 //         return: -1 if there is an error, 0 if calculation was successful
-int computeTankCorners(Tank* t, Point* corners[4]) {
+int computeTankCorners(Tank *t, Point *corners[4]) {
     // input validation
     for (int i = 0; i < 4; ++i) {
         if (corners[i] != NULL) {
@@ -22,14 +22,14 @@ int computeTankCorners(Tank* t, Point* corners[4]) {
     }
 
     // compute corner coordinates
-    int x;
-    int y;
+    register int x;
+    register int y;
 
     const int signX[] = {-1, 1, 1, -1};
     const int signY[] = {-1, -1, 1, 1};
     for (int i = 0; i < 4; ++i) {
-        x = (int)(sin(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signX[i]);
-        y = (int)(cos(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signY[i]);
+        x = (int) (sin(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signX[i]);
+        y = (int) (cos(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signY[i]);
 
         corners[i] = createPoint(x, y);
 
@@ -46,7 +46,7 @@ int computeTankCorners(Tank* t, Point* corners[4]) {
     float rotation = t->base.heading * 2 * PI / TOTAL_RADIUS;
 
     for (int i = 0; i < 4; ++i) {
-        Point* aux = rotatePoint(corners[i], rotation);
+        Point *aux = rotatePoint(corners[i], rotation);
 
         if (NULL == aux) {
             for (int i = 0; i < 4; ++i) {
@@ -65,15 +65,15 @@ int computeTankCorners(Tank* t, Point* corners[4]) {
     return 0;
 }
 
-int drawTank(Tigr *bmp, Tank* t) {
-    Point* corners[4] = {NULL, NULL, NULL, NULL};
-    Point* nozzle = NULL;
+int drawTank(Tigr *bmp, Tank *t) {
+    Point *corners[4] = {NULL, NULL, NULL, NULL};
+    Point *nozzle = NULL;
 
     int x, y;
     // compute nozzle tip coordinates
 
     x = 0;
-    y = -(int)(1.5 * t->base.sizeCoefficient);
+    y = -(int) (1.5 * t->base.sizeCoefficient);
 
     nozzle = createPoint(x, y);
 
@@ -84,7 +84,7 @@ int drawTank(Tigr *bmp, Tank* t) {
     // rotate the points according to the heading
     float rotation = t->base.heading * 2 * PI / TOTAL_RADIUS;
 
-    Point* aux = rotatePoint(nozzle, rotation);
+    Point *aux = rotatePoint(nozzle, rotation);
 
     if (NULL == aux) {
         freePoint(&nozzle);
@@ -96,7 +96,7 @@ int drawTank(Tigr *bmp, Tank* t) {
     nozzle->x += t->base.location->x;
     nozzle->y += t->base.location->y;
 
-    if(0 > computeTankCorners(t, corners)) {
+    if (0 > computeTankCorners(t, corners)) {
         freePoint(&nozzle);
         return -1;
     }
@@ -117,7 +117,7 @@ int drawTank(Tigr *bmp, Tank* t) {
     return 0;
 }
 
-int drawProjectile(Tigr *bmp, Projectile* p) {
+int drawProjectile(Tigr *bmp, Projectile *p) {
     tigrCircle(bmp, p->base.location->x, p->base.location->y, p->base.sizeCoefficient, LINE_COLOR);
     return -1;
 }

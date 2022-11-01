@@ -176,3 +176,32 @@ ForceRotational *generateRotationalFriction(PhysicalObject *object) {
     return result;
 }
 
+int applyForceLinear(PhysicalObject *object, ForceLinear *force, unsigned int deltaTime) {
+    Vector *appliedVelocity = createVector(force->vector->i / (float) object->mass * (float) deltaTime,
+                                           force->vector->j / (float) object->mass * (float) deltaTime);
+
+    if (NULL == appliedVelocity) {
+        return -1;
+    }
+
+    Vector *newVelocity = addVector(&object->linearVelocity, appliedVelocity);
+
+    freeVector(&appliedVelocity);
+
+    if (NULL == newVelocity) {
+        return -1;
+    }
+
+    object->linearVelocity = *newVelocity;
+    freeVector(&newVelocity);
+
+    return 0;
+}
+
+int applyForceRotational(PhysicalObject *object, ForceRotational *force, unsigned int deltaTime) {
+    return -1;
+}
+
+int updatePosition(PhysicalObject *object, unsigned int deltaTime) {
+    return -1;
+}

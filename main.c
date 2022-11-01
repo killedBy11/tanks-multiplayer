@@ -1,10 +1,13 @@
 #include "tigr.h"
 #include "graphics.h"
 #include "physics.h"
+#include <time.h>
 
 
 int main(int argc, char *argv[]) {
     Tigr *screen = tigrWindow(1024, 768, "Tanks", 0);
+    struct timespec now;
+    clock_gettime(CLOCK_REALTIME, &now);
     while (!tigrClosed(screen))
     {
         tigrClear(screen, BACKGROUND_COLOR);
