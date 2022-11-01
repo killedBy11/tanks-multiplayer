@@ -8,7 +8,19 @@
 #include "geometry.h"
 #include "tigr.h"
 
+// calculates the corner points of the Tank object given as a parameter, and allocates new Points in the corners array for
+// input: t - Tank *, the object for which the corners must be calculated
+//        corners - Point* [4], array of 4 Point pointers. The array must contain only NULL, as the pointers will be overwritten by the function
+// output: corners as a parameter, pointer array from input
+//         return: -1 if there is an error, 0 if calculation was successful
 int computeTankCorners(Tank* t, Point* corners[4]) {
+    // input validation
+    for (int i = 0; i < 4; ++i) {
+        if (corners[i] != NULL) {
+            return -1;
+        }
+    }
+
     // compute corner coordinates
     int x;
     int y;
