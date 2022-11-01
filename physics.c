@@ -199,9 +199,23 @@ int applyForceLinear(PhysicalObject *object, ForceLinear *force, unsigned int de
 }
 
 int applyForceRotational(PhysicalObject *object, ForceRotational *force, unsigned int deltaTime) {
-    return -1;
+    float appliedVelocity = force->torque / (float)object->mass * (float) deltaTime;
+
+    object->angularVelocity += appliedVelocity;
+    return 0;
 }
 
 int updatePosition(PhysicalObject *object, unsigned int deltaTime) {
-    return -1;
+    Point* newLocation = createPoint(object->location->x + (int)(object->linearVelocity.i * deltaTime), object->location->y +(int)(object->linearVelocity.j * deltaTime));
+
+    if (NULL == newLocation) {
+        return -1;
+    }
+
+    freePoint(&object->location);
+    object->location = newLocation;
+
+    object->heading += (int)(object->angularVelocity * deltaTime);
+
+    return 0;
 }
