@@ -118,5 +118,6 @@ int drawTank(Tigr *bmp, Tank* t) {
 }
 
 int drawProjectile(Tigr *bmp, Projectile* p) {
+    tigrCircle(bmp, p->base.location->x, p->base.location->y, p->base.sizeCoefficient, LINE_COLOR);
     return -1;
 }
