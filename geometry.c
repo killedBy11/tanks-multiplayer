@@ -3,8 +3,9 @@
 //
 
 #include <stdlib.h>
-#include "geometry.h"
 #include <math.h>
+#include <stdio.h>
+#include "geometry.h"
 
 Point *createPoint(int x, int y) {
     Point *p = (Point *) malloc(sizeof(Point));
@@ -61,4 +62,41 @@ Point *rotatePoint(Point *p, float radians) {
     int newPointY = (int) roundf(sine * p->x + cosine * p->y);
 
     return createPoint(newPointX, newPointY);
+}
+
+
+float absoluteValue(float x) {
+    if (x < 0) {
+        return -x;
+    }
+    return x;
+}
+
+float degreesToRadians(unsigned short int angle) {
+    return ((float) angle * (float) PI) / 180;
+}
+
+Vector *createVectorByAngle(float angle, float value) {
+    register float i = sinf(angle) * value;
+    register float j = cosf(angle) * value;
+
+    return createVector(i, -j);
+}
+
+unsigned short int addDegrees(short int angle1, short int angle2) {
+    register int unprocessedResult = (int) angle1 + (int) angle2;
+
+    if (unprocessedResult >= 0 && unprocessedResult < TOTAL_RADIUS) {
+        return (unsigned short int) unprocessedResult;
+    }
+
+    while (unprocessedResult >= 360) {
+        unprocessedResult -= 360;
+    }
+
+    while (unprocessedResult < 0) {
+        unprocessedResult += 360;
+    }
+
+    return (unsigned short int) unprocessedResult;
 }

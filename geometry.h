@@ -5,6 +5,9 @@
 #ifndef GRAPHICSTEST_GEOMETRY_H
 #define GRAPHICSTEST_GEOMETRY_H
 
+#define TOTAL_RADIUS 360
+#define PI 3.14159265359
+
 enum ObjectType {
     POINT, VECTOR
 };
@@ -48,12 +51,22 @@ void freeVector(Vector **v);
 // add 2 vectors together and return a pointer to the resulting vector, newly allocated
 Vector *addVector(Vector *v1, Vector *v2);
 
-//returns a new point which represents point p rotated with radians in trigonometric sense
+// returns a new point which represents point p rotated with radians in trigonometric sense
 //input:  p - Point*: address of point you want to rotate
 //        radians - float:  the number of radians by which the point will be rotated
 //output: the new rotated point
 Point *rotatePoint(Point *p, float radians);
 
 
+// returs the absolute value of a float given as a parameter
+float absoluteValue(float x);
+
+// convert an angle given in degrees and convert it to radians
+float degreesToRadians(unsigned short int angle);
+
+Vector *createVectorByAngle(float angle, float value);
+
+// adds two angle values from degrees
+unsigned short int addDegrees(short int angle1, short int angle2);
 
 #endif //GRAPHICSTEST_GEOMETRY_H

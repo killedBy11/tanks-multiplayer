@@ -114,17 +114,17 @@ void applyDamage(void **object, enum PhysicalObjectType type, unsigned short int
 // input: object - PhysicalObject*, pointer to property base of a physical object
 //        force - ForceLinear*, pointer to a force object to be applied
 //        deltaTime - time difference in nanoseconds from last update
-int applyForceLinear(PhysicalObject *object, ForceLinear *force, unsigned int deltaTime);
+int applyForceLinear(PhysicalObject *object, ForceLinear *force, float deltaTime);
 
 // apply a given rotational force object to a physical object and update its velocity
 // input: object - PhysicalObject*, pointer to property base of a physical object
 //        force - ForceRotational*, pointer to a force object to be applied
 //        deltaTime - time difference in nanoseconds from last update
-int applyForceRotational(PhysicalObject *object, ForceRotational *force, unsigned int deltaTime);
+int applyForceRotational(PhysicalObject *object, ForceRotational *force, float deltaTime);
 
 // updates an object's position relative to its past position, using the velocity properties, after a given time
 // input: object - PhysicalObject*, pointer to property base of a physical object
 //        deltaTime - time difference in nanoseconds from last update
-int updatePosition(PhysicalObject *object, unsigned int deltaTime);
+int updatePosition(PhysicalObject *object, float deltaTime);
 
 #endif //GRAPHICSTEST_PHYSICS_H

@@ -6,8 +6,6 @@
 #include "geometry.h"
 
 #define TANK_ASPECT_RATIO 60
-#define TOTAL_RADIUS 360
-#define PI 3.14159265359
 #define LINE_COLOR tigrRGB(0xFF, 0xFF, 0xFF)
 #define BACKGROUND_COLOR tigrRGB(0x00, 0x00, 0x00)
 

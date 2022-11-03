@@ -1,29 +1,35 @@
 #include "tigr.h"
 #include "graphics.h"
 #include "physics.h"
+#include "controls.h"
 #include <time.h>
-
 
 int main(int argc, char *argv[]) {
     Tigr *screen = tigrWindow(1024, 768, "Tanks", 0);
-    struct timespec now;
-    clock_gettime(CLOCK_REALTIME, &now);
-    while (!tigrClosed(screen))
-    {
+
+    struct timespec start;
+    clock_gettime(CLOCK_REALTIME, &start);
+
+    Point *location = createPoint(100, 700);
+    Tank *t = createTank(location, 0, 35, 0.2, 1000, MAX_HEALTH);
+
+    while (!tigrClosed(screen)) {
         tigrClear(screen, BACKGROUND_COLOR);
-        Point* location = createPoint(100, 100);
-        Tank* t = createTank(location, 0, 35, 1, 1, MAX_HEALTH);
+        struct timespec finish;
+        clock_gettime(CLOCK_REALTIME, &finish);
+        float deltaTime = (float) ((double) (finish.tv_sec - start.tv_sec) * 1000 +
+                                   (double) (finish.tv_nsec - start.tv_nsec) / 1000000);
+
+        rotationalForceGenerationCycle(screen, t, deltaTime);
+        linearForceGenerationCycle(screen, t, deltaTime);
+
+        updatePosition(&t->base, deltaTime);
+
+
         drawTank(screen, t);
 
-        freeTank(&t);
+        start = finish;
 
-        location = createPoint(200, 100);
-
-        Projectile* p = createProjectile(location, 2, 1, 1, MAX_HEALTH);
-
-        drawProjectile(screen, p);
-
-        freeProjectile(&p);
         tigrUpdate(screen);
     }
     tigrFree(screen);
