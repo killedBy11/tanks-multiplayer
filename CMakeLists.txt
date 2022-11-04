@@ -5,5 +5,7 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(graphicsTest main.c tigr.h tigr.c physics.h physics.c graphics.h graphics.c geometry.c geometry.h)
 
-target_link_libraries(graphicsTest "-framework Cocoa")
-target_link_libraries(graphicsTest "-framework OpenGL")
+target_link_libraries(graphicsTest "-lm")
+target_link_libraries(graphicsTest "-lGLU")
+target_link_libraries(graphicsTest "-lGL")
+target_link_libraries(graphicsTest "-lX11")

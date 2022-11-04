@@ -55,5 +55,9 @@ Vector *addVector(Vector *v1, Vector *v2);
 Point *rotatePoint(Point *p, float radians);
 
 
+//returns the scalar(dot) product of two vectors
+//input:
+float dotProduct(Vector *v1, Vector *v2);
+
 
 #endif //GRAPHICSTEST_GEOMETRY_H
