@@ -110,4 +110,21 @@ ForceRotational *generateRotationalFriction(PhysicalObject *object);
 // apply damage to a physical object and subtract the damage from the health of the physical object or destroy if the damage is too high
 void applyDamage(void **object, enum PhysicalObjectType type, unsigned short int damage);
 
+// apply a given linear force object to a physical object and update its velocity
+// input: object - PhysicalObject*, pointer to property base of a physical object
+//        force - ForceLinear*, pointer to a force object to be applied
+//        deltaTime - time difference in nanoseconds from last update
+int applyForceLinear(PhysicalObject *object, ForceLinear *force, float deltaTime);
+
+// apply a given rotational force object to a physical object and update its velocity
+// input: object - PhysicalObject*, pointer to property base of a physical object
+//        force - ForceRotational*, pointer to a force object to be applied
+//        deltaTime - time difference in nanoseconds from last update
+int applyForceRotational(PhysicalObject *object, ForceRotational *force, float deltaTime);
+
+// updates an object's position relative to its past position, using the velocity properties, after a given time
+// input: object - PhysicalObject*, pointer to property base of a physical object
+//        deltaTime - time difference in nanoseconds from last update
+int updatePosition(PhysicalObject *object, float deltaTime);
+
 #endif //GRAPHICSTEST_PHYSICS_H

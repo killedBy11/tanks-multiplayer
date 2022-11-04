@@ -59,5 +59,15 @@ Point *rotatePoint(Point *p, float radians);
 //input:
 float dotProduct(Vector *v1, Vector *v2);
 
+// returs the absolute value of a float given as a parameter
+float absoluteValue(float x);
+
+// convert an angle given in degrees and convert it to radians
+float degreesToRadians(unsigned short int angle);
+
+Vector *createVectorByAngle(float angle, float value);
+
+// adds two angle values from degrees
+unsigned short int addDegrees(short int angle1, short int angle2);
 
 #endif //GRAPHICSTEST_GEOMETRY_H
