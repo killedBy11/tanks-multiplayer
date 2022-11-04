@@ -5,6 +5,9 @@
 #ifndef GRAPHICSTEST_GEOMETRY_H
 #define GRAPHICSTEST_GEOMETRY_H
 
+#define TOTAL_RADIUS 360
+#define PI 3.14159265359
+
 enum ObjectType {
     POINT, VECTOR
 };
@@ -56,8 +59,10 @@ Point *rotatePoint(Point *p, float radians);
 
 
 //returns the scalar(dot) product of two vectors
-//input:
-float dotProduct(Vector *v1, Vector *v2);
+//input:v1- vector
+//      v2-vector
+//output: float representing scalar product between v1 and v2
+float getDotProduct(Vector *v1, Vector *v2);
 
 // returs the absolute value of a float given as a parameter
 float absoluteValue(float x);

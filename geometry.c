@@ -100,3 +100,8 @@ unsigned short int addDegrees(short int angle1, short int angle2) {
 
     return (unsigned short int) unprocessedResult;
 }
+
+float getDotProduct(Vector *v1, Vector *v2) {
+    return v1->i * v2->i + v1->j * v2->j;
+
+}
