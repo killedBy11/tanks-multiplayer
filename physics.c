@@ -4,6 +4,8 @@
 
 #include <stdlib.h>
 #include "physics.h"
+#include <math.h>
+#include <float.h>
 
 Tank *
 createTank(Point *location, unsigned short heading, float sizeCoefficient, float dragCoefficient, unsigned int mass,
@@ -220,3 +222,155 @@ int updatePosition(PhysicalObject *object, float deltaTime) {
 
     return 0;
 }
+
+int computeTankCorners(Tank *t, Point *corners[4]) {
+    // input validation
+    for (int i = 0; i < 4; ++i) {
+        if (corners[i] != NULL) {
+            return -1;
+        }
+    }
+
+    // compute corner coordinates
+    register int x;
+    register int y;
+
+    const int signX[] = {-1, 1, 1, -1};
+    const int signY[] = {-1, -1, 1, 1};
+    for (int i = 0; i < 4; ++i) {
+        x = (int) (sin(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signX[i]);
+        y = (int) (cos(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signY[i]);
+
+        corners[i] = createPoint(x, y);
+
+        if (NULL == corners[i]) {
+            for (int j = 0; j < i; ++j) {
+                freePoint(&corners[j]);
+            }
+
+            return -1;
+        }
+    }
+
+    // rotate the points according to the heading
+    float rotation = t->base.heading * 2 * PI / TOTAL_RADIUS;
+
+    for (int i = 0; i < 4; ++i) {
+        Point *aux = rotatePoint(corners[i], rotation);
+
+        if (NULL == aux) {
+            for (int i = 0; i < 4; ++i) {
+                freePoint(&corners[i]);
+            }
+
+            return -1;
+        }
+
+        freePoint(&corners[i]);
+        corners[i] = aux;
+        corners[i]->x += t->base.location->x;
+        corners[i]->y += t->base.location->y;
+    }
+
+    return 0;
+}
+
+void projectVertices(Point **tankCorners, Vector *axis, float *minimum, float *maximum) {
+    *minimum = 999999999;
+    *maximum = -999999999;
+    for (int i = 0; i < 4; i++) {
+        Vector pointVector;
+        pointVector.i = tankCorners[i]->x;
+        pointVector.j = tankCorners[i]->y;
+        float projection = getDotProduct(&pointVector, axis);
+        if (projection < *minimum)
+            *minimum = projection;
+        if (projection > *maximum)
+            *maximum = projection;
+    }
+}
+
+void deallocateMemoryUsedInTankCollision(float *minTank1, float *maxTank1, float *minTank2, float *maxTank2,
+                                         Point **cornersTank1, Point **cornersTank2) {
+
+    //deallocate the memory for minimums and maximums.
+    free(minTank1);
+    free(maxTank1);
+    free(minTank2);
+    free(maxTank2);
+
+    //deallocate the memory used for tanks corners.
+    for (int i = 0; i < 4; ++i) {
+        freePoint(&cornersTank1[i]);
+        freePoint(&cornersTank2[i]);
+    }
+    free(cornersTank1);
+    free(cornersTank2);
+}
+
+int checkTanksCollision(Tank *tank1, Tank *tank2) {
+    if (tank1 == NULL || tank2 == NULL) {
+        return -1;
+    }
+
+    Point **cornersTank1 = (Point **) malloc(4 * sizeof(Point *));
+    Point **cornersTank2 = (Point **) malloc(4 * sizeof(Point *));
+    for (int i = 0; i < 4; i++) {
+        cornersTank1[i] = NULL;
+        cornersTank2[i] = NULL;
+    }
+
+    if (computeTankCorners(tank1, cornersTank1) < 0) {
+        free(cornersTank1);
+        return -2;
+    }
+    if (computeTankCorners(tank2, cornersTank2) < 0) {
+        free(cornersTank2);
+        return -2;
+    }
+
+
+    float *minTank1 = (float *) malloc(sizeof(float));
+    float *maxTank1 = (float *) malloc(sizeof(float));
+    float *minTank2 = (float *) malloc(sizeof(float));
+    float *maxTank2 = (float *) malloc(sizeof(float));
+
+    for (int i = 0; i < 4; i++) {
+        //loop over tank1 corners
+        Point *point1 = cornersTank1[i];
+        Point *point2 = cornersTank1[(i + 1) % 4];
+
+        Vector *edgeDirection = createVector((float) (point2->x - point1->x), (float) (point2->y -
+                                                                                       point1->y));//edgeDirection from edge represented by point1 point2
+        Vector *perpendicularOnEdge = createVector((-1) * edgeDirection->j,
+                                                   edgeDirection->i);//perpendicular vector on edge represented by point1 point2
+
+        projectVertices(cornersTank1, perpendicularOnEdge, minTank1, maxTank1);
+        projectVertices(cornersTank2, perpendicularOnEdge, minTank2, maxTank2);
+        if (*minTank1 >= *maxTank2 || *minTank2 >= *maxTank1) {
+            deallocateMemoryUsedInTankCollision(minTank1,maxTank1,minTank2,maxTank2,cornersTank1,cornersTank2);
+            return 0;
+        }
+    }
+    for (int i = 0; i < 4; i++) {
+        //loop over tank2 corners
+        Point *point1 = cornersTank2[i];
+        Point *point2 = cornersTank2[(i + 1) % 4];
+
+        Vector *edgeDirection = createVector((float) (point2->x - point1->x), (float) (point2->y -
+                                                                                       point2->x));//edgeDirection from edge represented by point1 point2
+        Vector *perpendicularOnEdge = createVector((-1) * edgeDirection->j,
+                                                   edgeDirection->i);//perpendicular vector on edge represented by point1 point2
+
+        projectVertices(cornersTank1, perpendicularOnEdge, minTank1, maxTank1);
+        projectVertices(cornersTank2, perpendicularOnEdge, minTank2, maxTank2);
+        if (*minTank1 >= *maxTank2 || *minTank2 >= *maxTank1) {
+            deallocateMemoryUsedInTankCollision(minTank1,maxTank1,minTank2,maxTank2,cornersTank1,cornersTank2);
+            return 0;
+        }
+    }
+
+    deallocateMemoryUsedInTankCollision(minTank1,maxTank1,minTank2,maxTank2,cornersTank1,cornersTank2);
+    return 1;
+}
+
