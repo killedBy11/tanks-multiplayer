@@ -10,6 +10,8 @@
 
 #define MAX_HEALTH 100
 #define AIR_DENSITY 1.204
+#define TANK_ASPECT_RATIO 60
+
 
 enum PhysicalObjectType {
     TANK, PROJECTILE
@@ -126,5 +128,23 @@ int applyForceRotational(PhysicalObject *object, ForceRotational *force, float d
 // input: object - PhysicalObject*, pointer to property base of a physical object
 //        deltaTime - time difference in nanoseconds from last update
 int updatePosition(PhysicalObject *object, float deltaTime);
+
+
+// calculates the corner points of the Tank object given as a parameter, and allocates new Points in the corners array for
+// input: t - Tank *, the object for which the corners must be calculated
+//        corners - Point* [4], array of 4 Point pointers. The array must contain only NULL, as the pointers will be overwritten by the function
+// output: corners as a parameter, pointer array from input
+//         return: -1 if there is an error, 0 if calculation was successful
+int computeTankCorners(Tank *t, Point *corners[4]);
+
+
+//checks if two tanks are colliding
+//input: tank1- pointer to one tank
+//       tank2 -pointer to other tank
+//output: returns:  1 if the given tanks are penetrating
+//                  0 if the given tanks are NOT penetrating
+//                  -1 (error) if at least one of the given tanks is NULL
+//                  -2 if encountered error with memory allocation
+int checkTanksCollision(Tank* tank1, Tank* tank2);
 
 #endif //GRAPHICSTEST_PHYSICS_H

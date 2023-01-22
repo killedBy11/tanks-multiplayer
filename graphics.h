@@ -5,7 +5,7 @@
 #include "physics.h"
 #include "geometry.h"
 
-#define TANK_ASPECT_RATIO 60
+//#define TANK_ASPECT_RATIO 60
 #define LINE_COLOR tigrRGB(0xFF, 0xFF, 0xFF)
 #define BACKGROUND_COLOR tigrRGB(0x00, 0x00, 0x00)
 

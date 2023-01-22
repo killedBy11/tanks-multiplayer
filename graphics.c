@@ -3,67 +3,9 @@
 //
 
 #include <stdlib.h>
-#include <math.h>
 #include "graphics.h"
 #include "geometry.h"
 #include "tigr.h"
-
-// calculates the corner points of the Tank object given as a parameter, and allocates new Points in the corners array for
-// input: t - Tank *, the object for which the corners must be calculated
-//        corners - Point* [4], array of 4 Point pointers. The array must contain only NULL, as the pointers will be overwritten by the function
-// output: corners as a parameter, pointer array from input
-//         return: -1 if there is an error, 0 if calculation was successful
-int computeTankCorners(Tank *t, Point *corners[4]) {
-    // input validation
-    for (int i = 0; i < 4; ++i) {
-        if (corners[i] != NULL) {
-            return -1;
-        }
-    }
-
-    // compute corner coordinates
-    register int x;
-    register int y;
-
-    const int signX[] = {-1, 1, 1, -1};
-    const int signY[] = {-1, -1, 1, 1};
-    for (int i = 0; i < 4; ++i) {
-        x = (int) (sin(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signX[i]);
-        y = (int) (cos(TANK_ASPECT_RATIO * PI / TOTAL_RADIUS) * t->base.sizeCoefficient * signY[i]);
-
-        corners[i] = createPoint(x, y);
-
-        if (NULL == corners[i]) {
-            for (int j = 0; j < i; ++j) {
-                freePoint(&corners[j]);
-            }
-
-            return -1;
-        }
-    }
-
-    // rotate the points according to the heading
-    float rotation = t->base.heading * 2 * PI / TOTAL_RADIUS;
-
-    for (int i = 0; i < 4; ++i) {
-        Point *aux = rotatePoint(corners[i], rotation);
-
-        if (NULL == aux) {
-            for (int i = 0; i < 4; ++i) {
-                freePoint(&corners[i]);
-            }
-
-            return -1;
-        }
-
-        freePoint(&corners[i]);
-        corners[i] = aux;
-        corners[i]->x += t->base.location->x;
-        corners[i]->y += t->base.location->y;
-    }
-
-    return 0;
-}
 
 int drawTank(Tigr *bmp, Tank *t) {
     Point *corners[4] = {NULL, NULL, NULL, NULL};
