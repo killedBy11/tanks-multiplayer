@@ -7,7 +7,11 @@
 #include "geometry.h"
 #include "tigr.h"
 
-int drawTank(Tigr *bmp, Tank *t) {
+int drawTank(Tigr *bmp, Tank *t, TPixel color) {
+    if (NULL == t) {
+        return -1;
+    }
+
     Point *corners[4] = {NULL, NULL, NULL, NULL};
     Point *nozzle = NULL;
 
@@ -24,7 +28,7 @@ int drawTank(Tigr *bmp, Tank *t) {
     }
 
     // rotate the points according to the heading
-    float rotation = t->base.heading * 2 * PI / TOTAL_RADIUS;
+    float rotation = (float) (t->base.heading * 2 * PI / TOTAL_RADIUS);
 
     Point *aux = rotatePoint(nozzle, rotation);
 
@@ -35,8 +39,8 @@ int drawTank(Tigr *bmp, Tank *t) {
 
     freePoint(&nozzle);
     nozzle = aux;
-    nozzle->x += t->base.location->x;
-    nozzle->y += t->base.location->y;
+    nozzle->x += (int) t->base.location->x;
+    nozzle->y += (int) t->base.location->y;
 
     if (0 > computeTankCorners(t, corners)) {
         freePoint(&nozzle);
@@ -44,10 +48,10 @@ int drawTank(Tigr *bmp, Tank *t) {
     }
 
     // draw lines that make up the tank
-    tigrLine(bmp, t->base.location->x, t->base.location->y, nozzle->x, nozzle->y, LINE_COLOR);
-    tigrLine(bmp, corners[3]->x, corners[3]->y, corners[0]->x, corners[0]->y, LINE_COLOR);
+    tigrLine(bmp, (int) t->base.location->x, (int) t->base.location->y, nozzle->x, nozzle->y, color);
+    tigrLine(bmp, corners[3]->x, corners[3]->y, corners[0]->x, corners[0]->y, color);
     for (int i = 0; i < 3; ++i) {
-        tigrLine(bmp, corners[i]->x, corners[i]->y, corners[i + 1]->x, corners[i + 1]->y, LINE_COLOR);
+        tigrLine(bmp, corners[i]->x, corners[i]->y, corners[i + 1]->x, corners[i + 1]->y, color);
     }
 
     // clean up memory
@@ -59,7 +63,21 @@ int drawTank(Tigr *bmp, Tank *t) {
     return 0;
 }
 
-int drawProjectile(Tigr *bmp, Projectile *p) {
-    tigrCircle(bmp, p->base.location->x, p->base.location->y, p->base.sizeCoefficient, LINE_COLOR);
-    return -1;
+int drawProjectile(Tigr *bmp, Projectile *p, TPixel color) {
+    if (NULL == p) {
+        return -1;
+    }
+
+    tigrCircle(bmp, (int) p->base.location->x, (int) p->base.location->y, p->base.sizeCoefficient, color);
+    return 0;
+}
+
+int drawVector(Tigr *bmp, Vector *v, Point *anchor, TPixel color) {
+    if (NULL == v || NULL == anchor) {
+        return -1;
+    }
+
+    tigrLine(bmp, anchor->x, anchor->y, anchor->x + (int) (v->i * 100), anchor->y + (int) (v->j * 100),
+             color);
+    return 0;
 }

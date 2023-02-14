@@ -103,5 +103,73 @@ unsigned short int addDegrees(short int angle1, short int angle2) {
 
 float getDotProduct(Vector *v1, Vector *v2) {
     return v1->i * v2->i + v1->j * v2->j;
+}
 
+float distance(Point *point1, Point *point2) {
+    if (NULL == point1 || NULL == point2) {
+        return -1;
+    }
+
+    return (float) sqrt(
+            (point1->x - point2->x) * (point1->x - point2->x) + (point1->y - point2->y) * (point1->y - point2->y));
+}
+
+Point_f *createPoint_f(float x, float y) {
+    Point_f *p = (Point_f *) malloc(sizeof(Point_f));
+    if (NULL == p) {
+        return NULL;
+    }
+
+    p->x = x;
+    p->y = y;
+
+    return (Point_f *) p;
+}
+
+void freePoint_f(Point_f **p) {
+    free(*p);
+    *p = NULL;
+}
+
+Point_f *createPoint_fFromPoint(Point point) {
+    Point_f *p = (Point_f *) (Point *) malloc(sizeof(Point_f));
+    if (NULL == p) {
+        return NULL;
+    }
+
+    p->x = (float) point.x;
+    p->y = (float) point.y;
+
+    return (Point_f *) p;
+}
+
+Point_f *rotatePoint_f(Point_f *p, float radians) {
+    float sine = sinf(radians);
+    float cosine = cosf(radians);
+
+    float newPointX = cosine * p->x - sine * p->y;
+    float newPointY = sine * p->x + cosine * p->y;
+
+    return createPoint_f(newPointX, newPointY);
+}
+
+float distancef(Point_f *point1, Point_f *point2) {
+    if (NULL == point1 || NULL == point2) {
+        return -1;
+    }
+
+    return (float) sqrtf(
+            (point1->x - point2->x) * (point1->x - point2->x) + (point1->y - point2->y) * (point1->y - point2->y));
+}
+
+Point *createPointFromPoint_f(Point_f point) {
+    Point *p = (Point *) malloc(sizeof(Point));
+    if (NULL == p) {
+        return NULL;
+    }
+
+    p->x = (int) point.x;
+    p->y = (int) point.y;
+
+    return (Point *) p;
 }

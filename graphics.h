@@ -5,14 +5,16 @@
 #include "physics.h"
 #include "geometry.h"
 
-//#define TANK_ASPECT_RATIO 60
-#define LINE_COLOR tigrRGB(0xFF, 0xFF, 0xFF)
-#define BACKGROUND_COLOR tigrRGB(0x00, 0x00, 0x00)
-
 // Functions
 
 // gets a tank as a parameter and draws it on the screen given as parameter
-int drawTank(Tigr *bmp, Tank *t);
+int drawTank(Tigr *bmp, Tank *t, TPixel color);
 
 // gets a projectile as a parameter and draws it on the screen given as parameter
-int drawProjectile(Tigr *bmp, Projectile *p);
+int drawProjectile(Tigr *bmp, Projectile *p, TPixel color);
+
+// gets a vector and a point and draws the vector on the screen, anchored to the point received as a parameter
+// input: bmp - the bitmap on which to draw
+//        v - the vector to be drawn
+//        anchor - the point that the vector will be anchored on, the base on the vector will be drawn on the this point
+int drawVector(Tigr *bmp, Vector *v, Point *anchor, TPixel color);
