@@ -2,8 +2,9 @@
 // Created by Antoniu Ficard on 27.10.2022.
 //
 
-#include "physics.h"
-#include "geometry.h"
+#include "../physics/physics.h"
+#include "../geometry/geometry.h"
+#include "../measurement_units.h"
 
 // Functions
 

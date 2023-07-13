@@ -5,8 +5,9 @@
 #ifndef GRAPHICSTEST_PHYSICS_H
 #define GRAPHICSTEST_PHYSICS_H
 
-#include "tigr.h"
-#include "geometry.h"
+#include "../graphics/tigr.h"
+#include "../geometry/geometry.h"
+#include "../measurement_units.h"
 
 #define MAX_HEALTH 100
 #define AIR_DENSITY 1.204
@@ -24,11 +25,11 @@ typedef struct {
     Point_f *location;
     float dragCoefficient;
     float sizeCoefficient;
-    unsigned int mass;
-    unsigned short int health;
-    unsigned short int heading;
+    integer_kilograms_t mass;
+    percentage_t health;
+    degrees_t heading;
     Vector linearVelocity;
-    float angularVelocity;
+    degrees_per_millisecond_t angularVelocity;
 } PhysicalObject;
 
 typedef struct {
@@ -47,7 +48,7 @@ typedef struct {
 } ForceLinear;
 
 typedef struct {
-    float torque;
+    kilonewton_meters_t torque;
     enum ForceType force;
 } ForceRotational;
 
@@ -57,8 +58,8 @@ typedef struct {
 
 // allocate space in memory for a Tank object and initialise
 Tank *
-createTank(Point_f *location, unsigned short int heading, float sizeCoefficient, float dragCoefficient,
-           unsigned int mass,
+createTank(Point_f *location, degrees_t heading, float sizeCoefficient, float dragCoefficient,
+           integer_kilograms_t mass,
            unsigned short int health);
 
 // allocate space in memory for a Projectile object and initialise
@@ -69,7 +70,7 @@ Projectile *createProjectile(Point_f *location, float radius, float dragCoeffici
 ForceLinear *createForceLinear(Vector *vector);
 
 // allocate space in memory for a ForceRotational object and initialise
-ForceRotational *createForceRotational(float torque);
+ForceRotational *createForceRotational(kilonewton_meters_t torque);
 
 // destructors that go recursively for the structs defined above
 
@@ -110,24 +111,24 @@ ForceRotational *generateRotationalFriction(PhysicalObject *object);
 // functions that apply on physical objects
 
 // apply damage to a physical object and subtract the damage from the health of the physical object or destroy if the damage is too high
-int applyDamage(void **object, enum PhysicalObjectType type, unsigned short int damage);
+int applyDamage(void **object, enum PhysicalObjectType type, percentage_t damage);
 
 // apply a given linear force object to a physical object and update its velocity
 // input: object - PhysicalObject*, pointer to property base of a physical object
 //        force - ForceLinear*, pointer to a force object to be applied
 //        deltaTime - time difference in nanoseconds from last update
-int applyForceLinear(PhysicalObject *object, ForceLinear *force, float deltaTime);
+int applyForceLinear(PhysicalObject *object, ForceLinear *force, millisecond_t deltaTime);
 
 // apply a given rotational force object to a physical object and update its velocity
 // input: object - PhysicalObject*, pointer to property base of a physical object
 //        force - ForceRotational*, pointer to a force object to be applied
 //        deltaTime - time difference in nanoseconds from last update
-int applyForceRotational(PhysicalObject *object, ForceRotational *force, float deltaTime);
+int applyForceRotational(PhysicalObject *object, ForceRotational *force, millisecond_t deltaTime);
 
 // updates an object's position relative to its past position, using the velocity properties, after a given time
 // input: object - PhysicalObject*, pointer to property base of a physical object
 //        deltaTime - time difference in nanoseconds from last update
-int updatePosition(PhysicalObject *object, float deltaTime);
+int updatePosition(PhysicalObject *object, millisecond_t deltaTime);
 
 
 // calculates the corner points of the Tank object given as a parameter, and allocates new Points in the corners array for

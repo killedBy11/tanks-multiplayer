@@ -5,6 +5,8 @@
 #ifndef GRAPHICSTEST_GEOMETRY_H
 #define GRAPHICSTEST_GEOMETRY_H
 
+#include "../measurement_units.h"
+
 #define TOTAL_RADIUS 360
 #define PI 3.14159265359
 
@@ -75,30 +77,35 @@ Vector *addVector(Vector *v1, Vector *v2);
 // input:  p - Point*: address of point you want to rotate
 //         radians - float:  the number of radians by which the point will be rotated
 // output: the new rotated point
-Point *rotatePoint(Point *p, float radians);
+Point *rotatePoint(Point *p, radians_t radians);
 
 // returns a new Point_f which represents point p rotated with radians in trigonometric sense
 // input:  p - Point_f*: address of point you want to rotate
 //         radians - float:  the number of radians by which the point will be rotated
 // output: the new rotated point
-Point_f *rotatePoint_f(Point_f *p, float radians);
+Point_f *rotatePoint_f(Point_f *p, radians_t radians);
 
 // returns the scalar(dot) product of two vectors
-// input:v1- vector
-//      v2-vector
+// input: v1 - vector
+//        v2 - vector
 // output: float representing scalar product between v1 and v2
 float getDotProduct(Vector *v1, Vector *v2);
 
-// returs the absolute value of a float given as a parameter
+// returns the absolute value of a float given as a parameter
 float absoluteValue(float x);
 
 // convert an angle given in degrees and convert it to radians
-float degreesToRadians(unsigned short int angle);
+// input: angle - degrees_t
+// output: returns - radians_t - value of angle converted from degrees to radians
+radians_t degreesToRadians(degrees_t angle);
 
-Vector *createVectorByAngle(float angle, float value);
+Vector *createVectorByAngle(radians_t angle, float value);
 
 // adds two angle values from degrees
-unsigned short int addDegrees(short int angle1, short int angle2);
+// input: angle1 - first value in degrees
+//        angle2 - second value in degrees
+// output: returns - value in degrees of angle1 + angle2, result < 360 & result >= 0
+degrees_t addDegrees(degrees_t angle1, degrees_t angle2);
 
 // get the distance between two points
 // input: point1 - pointer to a Point

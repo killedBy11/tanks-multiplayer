@@ -2,21 +2,23 @@
 // Created by Antoniu Ficard on 02.11.2022.
 //
 
+#include <stdio.h>
 #include "controls.h"
-#include "flags.h"
-#include "graphics.h"
+#include "../flags.h"
+#include "../graphics/graphics.h"
+#include "../measurement_units.h"
 
-void rotationalForceGenerationCycle(Tigr *bmp, Tank *t, float deltaTime, int8_t *flags) {
+void rotationalForceGenerationCycle(Tigr *bmp, Tank *t, millisecond_t deltaTime, int8_t *flags) {
     ForceRotational *rotationalFriction = generateRotationalFriction(&t->base);
 
     ForceRotational *force = createForceRotational(0);
 
-    if (tigrKeyHeld(bmp, 'A')) {
+    if (tigrKeyHeld(bmp, ROTATE_LEFT_KEY)) {
         freeForceRotational(&force);
-        force = createForceRotational(-0.3f);
-    } else if (tigrKeyHeld(bmp, 'D')) {
+        force = createForceRotational(-ROTATION_KEY_TORQUE);
+    } else if (tigrKeyHeld(bmp, ROTATE_RIGHT_KEY)) {
         freeForceRotational(&force);
-        force = createForceRotational(0.3f);
+        force = createForceRotational(ROTATION_KEY_TORQUE);
     }
 
     ForceRotational *resultRotational = addForceRotational(force, rotationalFriction);
@@ -24,7 +26,7 @@ void rotationalForceGenerationCycle(Tigr *bmp, Tank *t, float deltaTime, int8_t 
     applyForceRotational(&t->base, resultRotational, deltaTime);
 }
 
-void linearForceGenerationCycle(Tigr *bmp, Tank *t, float deltaTime, int8_t *flags) {
+void linearForceGenerationCycle(Tigr *bmp, Tank *t, millisecond_t deltaTime, int8_t *flags) {
     Point *anchor = createPointFromPoint_f(*t->base.location);
     ForceLinear *friction = generateLinearFriction(&t->base);
 
@@ -35,15 +37,15 @@ void linearForceGenerationCycle(Tigr *bmp, Tank *t, float deltaTime, int8_t *fla
     Vector *v = createVector(0, 0);
     ForceLinear *f = createForceLinear(v);
 
-    if (tigrKeyHeld(bmp, 'W')) {
+    if (tigrKeyHeld(bmp, FORWARD_KEY)) {
         freeForceLinear(&f);
 
-        v = createVectorByAngle(degreesToRadians(t->base.heading), 0.5f);
+        v = createVectorByAngle(degreesToRadians(t->base.heading), FORWARD_KEY_FORCE);
         f = createForceLinear(v);
-    } else if (tigrKeyHeld(bmp, 'S')) {
+    } else if (tigrKeyHeld(bmp, BACKWARD_KEY)) {
         freeForceLinear(&f);
 
-        v = createVectorByAngle(degreesToRadians(t->base.heading), -0.35f);
+        v = createVectorByAngle(degreesToRadians(t->base.heading), -BACKWARD_KEY_FORCE);
         f = createForceLinear(v);
     }
 

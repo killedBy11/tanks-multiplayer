@@ -1,11 +1,11 @@
-#include "tigr.h"
-#include "graphics.h"
-#include "physics.h"
-#include "controls.h"
+#include "graphics/tigr.h"
+#include "graphics/graphics.h"
+#include "physics/physics.h"
+#include "controls/controls.h"
 #include "flags.h"
+#include "measurement_units.h"
 
 #include <time.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -92,7 +92,7 @@ void game(int8_t *flags) {
         tigrClear(screen, tigrRGB(0x00, 0x00, 0x00));
         struct timespec finish;
         clock_gettime(CLOCK_REALTIME, &finish);
-        float deltaTime = (float) ((double) (finish.tv_sec - start.tv_sec) * 1000 +
+        millisecond_t deltaTime = (millisecond_t) ((double) (finish.tv_sec - start.tv_sec) * 1000 +
                                    (double) (finish.tv_nsec - start.tv_nsec) / 1000000);
 
         rotationalForceGenerationCycle(screen, t1, deltaTime, flags);

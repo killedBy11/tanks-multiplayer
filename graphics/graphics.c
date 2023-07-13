@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include "graphics.h"
-#include "geometry.h"
+#include "../geometry/geometry.h"
 #include "tigr.h"
 
 int drawTank(Tigr *bmp, Tank *t, TPixel color) {
@@ -28,7 +28,7 @@ int drawTank(Tigr *bmp, Tank *t, TPixel color) {
     }
 
     // rotate the points according to the heading
-    float rotation = (float) (t->base.heading * 2 * PI / TOTAL_RADIUS);
+    radians_t rotation = degreesToRadians(t->base.heading);
 
     Point *aux = rotatePoint(nozzle, rotation);
 

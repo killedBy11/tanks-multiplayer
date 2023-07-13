@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 Tank *
-createTank(Point_f *location, unsigned short heading, float sizeCoefficient, float dragCoefficient, unsigned int mass,
+createTank(Point_f *location, degrees_t heading, float sizeCoefficient, float dragCoefficient, integer_kilograms_t mass,
            unsigned short health) {
     Tank *t = (Tank *) malloc(sizeof(Tank));
 
@@ -31,7 +31,7 @@ createTank(Point_f *location, unsigned short heading, float sizeCoefficient, flo
     return t;
 }
 
-Projectile *createProjectile(Point_f *location, float radius, float dragCoefficient, unsigned int mass,
+Projectile *createProjectile(Point_f *location, float radius, float dragCoefficient, integer_kilograms_t mass,
                              unsigned short health) {
     Projectile *p = (Projectile *) malloc(sizeof(Projectile));
 
@@ -65,7 +65,7 @@ ForceLinear *createForceLinear(Vector *vector) {
     return f;
 }
 
-ForceRotational *createForceRotational(float torque) {
+ForceRotational *createForceRotational(kilonewton_meters_t torque) {
     ForceRotational *f = (ForceRotational *) malloc(sizeof(ForceRotational));
 
     if (NULL == f) {
@@ -129,7 +129,7 @@ void destroyPhysicalObject(void **object, enum PhysicalObjectType type) {
     }
 }
 
-int applyDamage(void **object, enum PhysicalObjectType type, unsigned short int damage) {
+int applyDamage(void **object, enum PhysicalObjectType type, percentage_t damage) {
     if (NULL == object || NULL == *object) {
         return -1;
     }
@@ -184,7 +184,7 @@ ForceRotational *generateRotationalFriction(PhysicalObject *object) {
     return result;
 }
 
-int applyForceLinear(PhysicalObject *object, ForceLinear *force, float deltaTime) {
+int applyForceLinear(PhysicalObject *object, ForceLinear *force, millisecond_t deltaTime) {
     Vector *appliedVelocity = createVector(force->vector->i / (float) object->mass * deltaTime,
                                            force->vector->j / (float) object->mass * deltaTime);
 
@@ -206,14 +206,14 @@ int applyForceLinear(PhysicalObject *object, ForceLinear *force, float deltaTime
     return 0;
 }
 
-int applyForceRotational(PhysicalObject *object, ForceRotational *force, float deltaTime) {
+int applyForceRotational(PhysicalObject *object, ForceRotational *force, millisecond_t deltaTime) {
     register float appliedVelocity = force->torque / (float) object->mass * deltaTime;
 
     object->angularVelocity += appliedVelocity;
     return 0;
 }
 
-int updatePosition(PhysicalObject *object, float deltaTime) {
+int updatePosition(PhysicalObject *object, millisecond_t deltaTime) {
     register Point_f *newLocation = createPoint_f(object->location->x + object->linearVelocity.i * deltaTime,
                                                   object->location->y + object->linearVelocity.j * deltaTime);
 

@@ -54,7 +54,7 @@ Vector *addVector(Vector *v1, Vector *v2) {
     return result;
 }
 
-Point *rotatePoint(Point *p, float radians) {
+Point *rotatePoint(Point *p, radians_t radians) {
     float sine = sinf(radians);
     float cosine = cosf(radians);
 
@@ -72,22 +72,22 @@ float absoluteValue(float x) {
     return x;
 }
 
-float degreesToRadians(unsigned short int angle) {
-    return ((float) angle * (float) PI) / 180;
+radians_t degreesToRadians(degrees_t angle) {
+    return ((float) angle * 2 * (float) PI) / TOTAL_RADIUS;
 }
 
-Vector *createVectorByAngle(float angle, float value) {
+Vector *createVectorByAngle(radians_t angle, float value) {
     register float i = sinf(angle) * value;
     register float j = cosf(angle) * value;
 
     return createVector(i, -j);
 }
 
-unsigned short int addDegrees(short int angle1, short int angle2) {
+degrees_t addDegrees(degrees_t angle1, degrees_t angle2) {
     register int unprocessedResult = (int) angle1 + (int) angle2;
 
     if (unprocessedResult >= 0 && unprocessedResult < TOTAL_RADIUS) {
-        return (unsigned short int) unprocessedResult;
+        return (degrees_t) unprocessedResult;
     }
 
     while (unprocessedResult >= 360) {
@@ -98,7 +98,7 @@ unsigned short int addDegrees(short int angle1, short int angle2) {
         unprocessedResult += 360;
     }
 
-    return (unsigned short int) unprocessedResult;
+    return (degrees_t) unprocessedResult;
 }
 
 float getDotProduct(Vector *v1, Vector *v2) {
@@ -122,6 +122,7 @@ Point_f *createPoint_f(float x, float y) {
 
     p->x = x;
     p->y = y;
+    p->type = POINT_F;
 
     return (Point_f *) p;
 }
@@ -139,11 +140,12 @@ Point_f *createPoint_fFromPoint(Point point) {
 
     p->x = (float) point.x;
     p->y = (float) point.y;
+    p->type = POINT_F;
 
     return (Point_f *) p;
 }
 
-Point_f *rotatePoint_f(Point_f *p, float radians) {
+Point_f *rotatePoint_f(Point_f *p, radians_t radians) {
     float sine = sinf(radians);
     float cosine = cosf(radians);
 
