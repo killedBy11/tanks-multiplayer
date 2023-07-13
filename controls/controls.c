@@ -2,7 +2,6 @@
 // Created by Antoniu Ficard on 02.11.2022.
 //
 
-#include <stdio.h>
 #include "controls.h"
 #include "../flags.h"
 #include "../graphics/graphics.h"

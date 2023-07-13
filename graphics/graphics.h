@@ -3,6 +3,8 @@
 //
 
 #include "../physics/physics.h"
+#include "../physics/tank.h"
+#include "../physics/projectile.h"
 #include "../geometry/geometry.h"
 #include "../measurement_units.h"
 

@@ -3,7 +3,7 @@ project(graphicsTest C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(graphicsTest main.c graphics/tigr.h graphics/tigr.c physics/physics.h physics/physics.c graphics/graphics.h graphics/graphics.c geometry/geometry.c geometry/geometry.h controls/controls.h controls/controls.c flags.h measurement_units.h)
+add_executable(graphicsTest main.c graphics/tigr.h graphics/tigr.c physics/physics.h physics/physics.c graphics/graphics.h graphics/graphics.c geometry/geometry.c geometry/geometry.h controls/controls.h controls/controls.c flags.h measurement_units.h physics/tank.c physics/tank.h physics/projectile.c physics/projectile.h physics/physical_object_damage.c physics/physical_object_damage.h)
 
 target_link_libraries(graphicsTest "-lm")
 target_link_libraries(graphicsTest "-lGLU")

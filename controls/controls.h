@@ -6,7 +6,9 @@
 #define GRAPHICSTEST_CONTROLS_H
 
 #include <stdint.h>
+
 #include "../physics/physics.h"
+#include "../physics/tank.h"
 #include "../graphics/tigr.h"
 #include "../geometry/geometry.h"
 
